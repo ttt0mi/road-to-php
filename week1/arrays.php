@@ -19,9 +19,9 @@ $myInfoMap = [
     "last_name" => "omolokun",
     "age" => 23
 ];
-echo <<<EOF
+echo <<<EOT
 {$myInfoMap["first_name"]}, {$myInfoMap["last_name"]}, {$myInfoMap["age"]}; 
-EOF;
+EOT;
 
 
 echo "\ARRAY FUNCTIONS\n";
