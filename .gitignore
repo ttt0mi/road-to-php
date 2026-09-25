@@ -1,0 +1,32 @@
+# Core Dependencies
+/vendor/
+composer.phar
+
+# Environment & Sensitive Files (Never commit these!)
+.env
+.env.local
+.env.*.local
+config/development.php
+
+# PHPUnit & Testing Caches
+.phpunit.result.cache
+.phpunit.cache/
+.php-cs-fixer.cache
+.php_cs.cache
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+.DS_Store
+Thumbs.db
+.history
+
+# Logs and Caches
+*.log
+/logs/
+/cache/
