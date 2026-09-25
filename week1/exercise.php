@@ -23,20 +23,10 @@ foreach ($salesData as $columnName => $row) {
     $salesData[$columnName]["TOTAL"] = $row["QUANTITYORDERED"] * $row["PRICEEACH"];    //not working
 }
 
-//for($i = 0; $i < count($salesData); $i++) {
-//    $salesData[$i]["TOTAL"] = $salesData[$i]["QUANTITYORDERED"] * $salesData[$i]["PRICEEACH"];
-//}
-// i'm dumb
-
 $totals = array_column($salesData, "TOTAL");
 print_r($totals);
 
 $totalSales = array_sum($totals);
-
-//$csvSalesReport = <<<EOT
-//    $totalSales
-//EOT;
-//echo $csvSalesReport;
 
 $csvSalesReport = "";
 
