@@ -7,7 +7,7 @@ $fileName = "../../utilities/sales_data_sample_new.csv";
 if (($file = fopen($fileName, "r")) !== FALSE) {
 
     $header = fgetcsv($file, escape: "\\");
-    $data = [];
+    $salesData = [];
 
     while (($line = fgetcsv($file, escape:"\\")) !== false) {
         $salesData[] = array_combine($header, $line);
