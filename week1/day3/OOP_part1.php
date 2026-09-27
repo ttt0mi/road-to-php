@@ -58,7 +58,7 @@ echo $lineItem1->getTotal();
 
 
 class Invoice {
-    public readonly DateTime $dueDate;
+    public readonly DateTimeImmutable $dueDate;
     public readonly float $total;
     /** 
      * @var LineItem[]
@@ -72,7 +72,7 @@ class Invoice {
         private Status $status = Status::DRAFT
     ) {
         $this->lineItems = [];
-        $this->dueDate = new DateTime("now");
+        $this->dueDate = new DateTimeImmutable("now");
         $this->total = 0;
     }
 
