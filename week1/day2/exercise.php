@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 $filePath = "../../utilities/sales_data_sample_new.csv";
 
-function readCSV(string $filePath, int $rowLimit): array {
+function readCSV(string $filePath, int $rowLimit = 10): array {
 
     $file = fopen($filePath, "r");
 
@@ -60,7 +60,7 @@ function generateReport(array $salesData, float $totalSales): string {
 
 
 $salesData = readCSV($filePath, 10);
-$salesData = calculateTotalFromSales($salesData);
-$salesGrandTotal = calculateTotal($salesData);
-$csvSalesReport = generateReport($salesData, $salesGrandTotal);
+$updatedSalesData = calculateTotalFromSales($salesData);
+$salesGrandTotal = calculateTotal($updatedSalesData);
+$csvSalesReport = generateReport($updatedSalesData, $salesGrandTotal);
 echo $csvSalesReport;
