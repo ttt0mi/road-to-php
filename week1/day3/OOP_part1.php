@@ -76,14 +76,18 @@ class Invoice {
         $this->total = 0;
     }
 
-    public function addLineItem(LineItem $lineItem): void {
-        array_push($this->lineItems, $lineItem);
+    private function calculateTotal(): void {   //helper function
         $this->total = array_sum(
                         array_map(
                             fn(LineItem $lineItem) => $lineItem->getTotal(), 
                         $this->lineItems
                         )
                     );
+    }
+
+    public function addLineItem(LineItem $lineItem): void {
+        array_push($this->lineItems, $lineItem);
+        $this->calculateTotal();
     }
 
     public function getLineItems(): array {
