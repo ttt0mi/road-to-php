@@ -1,22 +1,19 @@
 <?php
 
-enum Currency: string
-{
+enum Currency: string {
     case NGN = "NGN";
     case USD = "USD";
     case EUR = "EUR";
     case GBP = "GBP";
 }
 
-enum Status: string
-{
+enum Status: string {
     case DRAFT = "draft";
     case SENT = "sent";
     case PAID = "paid";
 }
 
-class LineItem
-{
+class LineItem {
     private float $total;
 
     public function __construct(
@@ -38,8 +35,7 @@ class LineItem
         $this->calculateTotal();
     }
 
-    private function calculateTotal(): void
-    {
+    private function calculateTotal(): void {
         $this->total = $this->price * $this->quantity;
     }
 
@@ -51,13 +47,11 @@ class LineItem
         return "{$this->currency->value}{$this->total}";
     }
 
-    public function getProduct(): string
-    {
+    public function getProduct(): string {
         return $this->product;
     }
 
-    public function changeCurrency(string $currencyCode): void
-    {
+    public function changeCurrency(string $currencyCode): void {
         if (($this->currency = Currency::tryFrom($currencyCode)) === null) {
             throw new InvalidArgumentException("invalid currency code");
         }   //idk about this
@@ -87,8 +81,7 @@ class Invoice {
         $this->total = 0;
     }
 
-    private function calculateTotal(): void
-    {   //helper function
+    private function calculateTotal(): void {   //helper function
         $this->total = array_sum(
                         array_map(
                             fn(LineItem $lineItem) => $lineItem->getTotal(), 
@@ -97,19 +90,16 @@ class Invoice {
                     );
     }
 
-    public function addLineItem(LineItem $lineItem): void
-    {
+    public function addLineItem(LineItem $lineItem): void {
         array_push($this->lineItems, $lineItem);
         $this->calculateTotal();
     }
 
-    public function getLineItems(): array
-    {
+    public function getLineItems(): array {
         return $this->lineItems;
     }
 
-    public function getStatus(): Status
-    {
+    public function getStatus(): Status {
         return $this->status;
     }
 
@@ -136,17 +126,14 @@ $invoice->addLineItem($lineItem1);
 echo $invoice->id; // can read but cannot modify
 
 
-class MathHelper
-{
+class MathHelper {
     public static float $PI = 3.14; // accessible by the class itself with ::
 
-    public static function add(int $a, int $b): int
-    {
+    public static function add(int $a, int $b): int {
         return $a + $b;
     }
 
-    public static function areaOfCircle(float $radius): float
-    {
+    public static function areaOfCircle(float $radius): float {
         return self::$PI * ($radius ** 2);
         // can only use static properties inside static methods, $this is not allowed
         // same as MathHelper::$PI
