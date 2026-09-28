@@ -43,13 +43,11 @@ class LineItem
         $this->total = $this->price * $this->quantity;
     }
 
-    public function getTotal(): float
-    {
+    public function getTotal(): float {
         return $this->total;
     }
 
-    public function getTotalAsString(): string
-    {
+    public function getTotalAsString(): string {
         return "{$this->currency->value}{$this->total}";
     }
 
@@ -70,8 +68,7 @@ $lineItem1 = new LineItem("lappy", 1, 1_099, Currency::NGN);
 echo $lineItem1->getTotal();
 
 
-class Invoice
-{
+class Invoice {
     private DateTimeImmutable $dueDate;
     private float $total;
     /** 
@@ -93,11 +90,11 @@ class Invoice
     private function calculateTotal(): void
     {   //helper function
         $this->total = array_sum(
-            array_map(
-                fn(LineItem $lineItem) => $lineItem->getTotal(),
-                $this->lineItems
-            )
-        );
+                        array_map(
+                            fn(LineItem $lineItem) => $lineItem->getTotal(), 
+                            $this->lineItems
+                        )
+                    );
     }
 
     public function addLineItem(LineItem $lineItem): void
@@ -116,18 +113,15 @@ class Invoice
         return $this->status;
     }
 
-    public function getTotal(): float
-    {
+    public function getTotal(): float {
         return $this->total;
     }
 
-    public function getDueDate(): string
-    {
+    public function getDueDate(): string {
         return $this->dueDate->format("Y-m-d H:i:s");
     }
 
-    public function markStatusAs(string $status): void
-    {
+    public function markStatusAs(string $status): void {
         $this->status = match (strtolower(trim($status))) {
             "draft" => Status::DRAFT,
             "sent" => Status::SENT,
