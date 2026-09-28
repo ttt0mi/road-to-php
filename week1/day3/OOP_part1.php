@@ -1,19 +1,22 @@
 <?php
 
-enum Currency: string {
+enum Currency: string
+{
     case NGN = "NGN";
     case USD = "USD";
     case EUR = "EUR";
     case GBP = "GBP";
 }
 
-enum Status: string {
+enum Status: string
+{
     case DRAFT = "draft";
     case SENT = "sent";
     case PAID = "paid";
 }
 
-class LineItem {
+class LineItem
+{
     private float $total;
 
     public function __construct(
@@ -31,22 +34,32 @@ class LineItem {
         if ($price < 0) {
             throw new InvalidArgumentException("price can not be negative");
         }
+
+        $this->calculateTotal();
     }
 
-    private function calculateTotal(): void {
+    private function calculateTotal(): void
+    {
         $this->total = $this->price * $this->quantity;
     }
 
-    public function getTotal(): string {
-        $this->calculateTotal();
-        return "{$this->currency} {$this->total}";
+    public function getTotal(): float
+    {
+        return $this->total;
     }
 
-    public function getProduct(): string {
+    public function getTotalAsString(): string
+    {
+        return "{$this->currency->value}{$this->total}";
+    }
+
+    public function getProduct(): string
+    {
         return $this->product;
     }
 
-    public function changeCurrency(string $currencyCode): void {
+    public function changeCurrency(string $currencyCode): void
+    {
         if (($this->currency = Currency::tryFrom($currencyCode)) === null) {
             throw new InvalidArgumentException("invalid currency code");
         }   //idk about this
@@ -57,9 +70,10 @@ $lineItem1 = new LineItem("lappy", 1, 1_099, Currency::NGN);
 echo $lineItem1->getTotal();
 
 
-class Invoice {
-    public readonly DateTime $dueDate;
-    public readonly float $total;
+class Invoice
+{
+    private DateTimeImmutable $dueDate;
+    private float $total;
     /** 
      * @var LineItem[]
      */
@@ -68,37 +82,52 @@ class Invoice {
 
     public function __construct(
         public readonly string $id,
-        public readonly string $customer,
+        private string $customer,
         private Status $status = Status::DRAFT
     ) {
         $this->lineItems = [];
-        $this->dueDate = new DateTime("now");
+        $this->dueDate = new DateTimeImmutable("now");
         $this->total = 0;
     }
 
-    private function calculateTotal(): void {   //helper function
+    private function calculateTotal(): void
+    {   //helper function
         $this->total = array_sum(
-                        array_map(
-                            fn(LineItem $lineItem) => $lineItem->getTotal(), 
-                        $this->lineItems
-                        )
-                    );
+            array_map(
+                fn(LineItem $lineItem) => $lineItem->getTotal(),
+                $this->lineItems
+            )
+        );
     }
 
-    public function addLineItem(LineItem $lineItem): void {
+    public function addLineItem(LineItem $lineItem): void
+    {
         array_push($this->lineItems, $lineItem);
         $this->calculateTotal();
     }
 
-    public function getLineItems(): array {
+    public function getLineItems(): array
+    {
         return $this->lineItems;
     }
 
-    public function getStatus(): Status {
+    public function getStatus(): Status
+    {
         return $this->status;
     }
 
-    public function markStatusAs(string $status): void {
+    public function getTotal(): float
+    {
+        return $this->total;
+    }
+
+    public function getDueDate(): string
+    {
+        return $this->dueDate->format("Y-m-d H:i:s");
+    }
+
+    public function markStatusAs(string $status): void
+    {
         $this->status = match (strtolower(trim($status))) {
             "draft" => Status::DRAFT,
             "sent" => Status::SENT,
@@ -113,14 +142,17 @@ $invoice->addLineItem($lineItem1);
 echo $invoice->id; // can read but cannot modify
 
 
-class MathHelper {
+class MathHelper
+{
     public static float $PI = 3.14; // accessible by the class itself with ::
 
-    public static function add(int $a, int $b): int {
+    public static function add(int $a, int $b): int
+    {
         return $a + $b;
     }
 
-    public static function areaOfCircle(float $radius): float {
+    public static function areaOfCircle(float $radius): float
+    {
         return self::$PI * ($radius ** 2);
         // can only use static properties inside static methods, $this is not allowed
         // same as MathHelper::$PI
