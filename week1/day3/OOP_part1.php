@@ -31,15 +31,20 @@ class LineItem {
         if ($price < 0) {
             throw new InvalidArgumentException("price can not be negative");
         }
+
+        $this->calculateTotal();
     }
 
     private function calculateTotal(): void {
         $this->total = $this->price * $this->quantity;
     }
 
-    public function getTotal(): string {
-        $this->calculateTotal();
-        return "{$this->currency} {$this->total}";
+    public function getTotal(): float {
+        return $this->total;
+    }
+
+    public function getTotalAsString(): string {
+        return "{$this->currency->value}{$this->total}";
     }
 
     public function getProduct(): string {
@@ -58,8 +63,8 @@ echo $lineItem1->getTotal();
 
 
 class Invoice {
-    public readonly DateTimeImmutable $dueDate;
-    public readonly float $total;
+    private DateTimeImmutable $dueDate;
+    private float $total;
     /** 
      * @var LineItem[]
      */
@@ -68,7 +73,7 @@ class Invoice {
 
     public function __construct(
         public readonly string $id,
-        public readonly string $customer,
+        private string $customer,
         private Status $status = Status::DRAFT
     ) {
         $this->lineItems = [];
@@ -80,7 +85,7 @@ class Invoice {
         $this->total = array_sum(
                         array_map(
                             fn(LineItem $lineItem) => $lineItem->getTotal(), 
-                        $this->lineItems
+                            $this->lineItems
                         )
                     );
     }
@@ -96,6 +101,14 @@ class Invoice {
 
     public function getStatus(): Status {
         return $this->status;
+    }
+
+    public function getTotal(): float {
+        return $this->total;
+    }
+
+    public function getDueDate(): string {
+        return $this->dueDate->format("Y-m-d H:i:s");
     }
 
     public function markStatusAs(string $status): void {
