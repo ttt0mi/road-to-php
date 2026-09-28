@@ -112,7 +112,7 @@ trait HasTimestamps {
     private DateTimeImmutable $createdAt;
     private DateTimeImmutable $updatedAt;
 
-    public function initTimestamps(): void {    // for date instatiation
+    public function initTimestamps(): void {    // for date instantiation
         $now = new DateTimeImmutable("now");
         $this->createdAt = $now;
         $this->updatedAt = $now;
@@ -131,12 +131,17 @@ trait HasTimestamps {
     }
 }
 
-class Invoice {
-    use HasTimestamps;
-}
 class Customer {
     use HasTimestamps;
+
+    public function __construct() {
+        $this->initTimestamps();
+    }
 }
 class Product {
     use HasTimestamps;
+
+    public function __construct() {
+        $this->initTimestamps();
+    }
 }
