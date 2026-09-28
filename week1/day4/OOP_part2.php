@@ -52,7 +52,7 @@ abstract class Logger {
     }
 
     abstract public function log(string $message): void;
-    // every concrete child class must provide its own process() implementation
+    // every concrete child class must provide its own log() implementation
 }
 
 class FileLogger extends Logger {
