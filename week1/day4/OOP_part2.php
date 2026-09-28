@@ -112,7 +112,7 @@ trait HasTimestamps {
     private DateTimeImmutable $createdAt;
     private DateTimeImmutable $updatedAt;
 
-    public function initTimestamps(): void {
+    public function initTimestamps(): void {    // for date instatiation
         $now = new DateTimeImmutable("now");
         $this->createdAt = $now;
         $this->updatedAt = $now;
